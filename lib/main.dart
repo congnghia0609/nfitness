@@ -2,6 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:nfitness/constants.dart';
+import 'package:nfitness/screens/details_screen.dart';
+
+import 'widgets/bottom_nav_bar.dart';
+import 'widgets/category_card.dart';
+import 'widgets/search_bar.dart';
 
 void main() {
   runApp(MyApp());
@@ -29,6 +34,7 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size; // this gonna give us total height and with of our divice
     return Scaffold(
+      bottomNavigationBar: BottomNavBar(),
       body: Stack(
         children: <Widget>[
           Container(
@@ -63,32 +69,45 @@ class HomeScreen extends StatelessWidget {
                   ),
                   Text(
                     "Good Morning \nNghiaTC",
-                    style: Theme.of(context)
-                        .textTheme
-                        .display1
-                        .copyWith(fontWeight: FontWeight.w900),
+                    style: Theme.of(context).textTheme.display1.copyWith(fontWeight: FontWeight.w900),
                   ),
-                  Container(
-                    margin: EdgeInsets.symmetric(vertical: 30),
-                    padding: EdgeInsets.symmetric(horizontal: 30, vertical: 5),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(29.5),
-                    ),
-                    child: TextField(
-                      decoration: InputDecoration(
-                        hintText: "Search",
-                        icon: SvgPicture.asset("assets/icons/search.svg"),
-                        border: InputBorder.none,
-                      ),
-                    ),
-                  ),
+                  SearchBar(),
                   Expanded(
                     child: GridView.count(
                       crossAxisCount: 2,
                       childAspectRatio: .85,
+                      crossAxisSpacing: 20,
+                      mainAxisSpacing: 20,
                       children: <Widget>[
-                        CategoryCard(),
+                        CategoryCard(
+                          title: "Diet Recommendation",
+                          svgSrc: "assets/icons/Hamburger.svg",
+                          press: () {},
+                        ),
+                        CategoryCard(
+                          title: "Kegel Exercises",
+                          svgSrc: "assets/icons/Excrecises.svg",
+                          press: () {},
+                        ),
+                        CategoryCard(
+                          title: "Meditation",
+                          svgSrc: "assets/icons/Meditation.svg",
+                          press: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) {
+                                  return DetailsScreen();
+                                },
+                              ),
+                            );
+                          },
+                        ),
+                        CategoryCard(
+                          title: "Yoga",
+                          svgSrc: "assets/icons/yoga.svg",
+                          press: () {},
+                        ),
                       ],
                     ),
                   )
@@ -102,34 +121,4 @@ class HomeScreen extends StatelessWidget {
   }
 }
 
-class CategoryCard extends StatelessWidget {
-  const CategoryCard({
-    Key key,
-  }) : super(key: key);
 
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(13),
-      ),
-      child: Column(
-        children: <Widget>[
-          Spacer(),
-          SvgPicture.asset("assets/icons/Hamburger.svg"),
-          Spacer(),
-          Text(
-            "Diet Recommendation",
-            textAlign: TextAlign.center,
-            style: Theme.of(context)
-                .textTheme
-                .title
-                .copyWith(fontSize: 15),
-          ),
-        ],
-      ),
-    );
-  }
-}
